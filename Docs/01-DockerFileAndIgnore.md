@@ -31,6 +31,7 @@ The .dockerfile purpose boils down to we saw at the previous lesson:
 To build a successful docker file we need to take the following actions:
 1. [Setup container and restore dependencies](#dockerfile-setup-container-and-restore-dependencies)
 2. [Publishing our app](#dockerfile-how-to-publish-your-app)
+3. [Setup entry point for our container](#dockerfile-setup-an-entry-point-for-our-container)
 
 ### Dockerfile: Setup container and restore dependencies
 
@@ -51,4 +52,43 @@ COPY src/host/*.csproj ./src/host/
 RUN dotnet restore
 ```
 ### Dockerfile: how to publish your app
+
+Now that we have solved every needed dependency, we need to take the following actions:
+1. Copy the rest of the source code (remember .dockeringore? it serves its purpose at this very step)
+2. Publish our application
+> Remember to use **-o flag** to specify the *output folder* for tidiness.
+```
+# copy the rest of the file so we can run the publish command
+COPY . ./
+RUN dotnet publish -c Release -o publish
+```
+
+### Dockerfile: setup an entry point for our container
+
+To keep our images lean we need a smaller image than the sdk. They all can be found at (microsoft docker image)[ https://hub.docker.com/_/microsoft-dotnet].
+> Usually for aspnet core we use aspnet image but since we are using a console app we will use runtime
+
+Therefore, we will execute the following actions:
+1. Use a container smaller image 
+2. Go back to our original working directory
+3. Copy the contents of the folder where we published our application in to the containers root
+4. Setting up the entry point
+
+```
+# genereate a runtime image (why? runtime image is smaller that sdk image)
+FROM mcr.microsoft.com/dotnet/runtime:5.0 
+WORKDIR /source
+
+# copy all file form the folder where we published our porject at the root folder
+COPY --from=build-env /source/publish ./
+
+# set up the entry point just as we did with dotnet .\MyBackroundProces.Host.dll
+ENTRYPOINT ["dotnet", "MyBackroundProces.Host.dll"]
+```
+> When defining entry point we are doing something similar to what we did int the previous lesson when running our published app 
+```
+dotnet .\MyBackroundProces.Host.dll
+```
+
+
 

@@ -11,7 +11,7 @@ RUN dotnet restore
 COPY . ./
 RUN dotnet publish -c Release -o publish
 
-# genereate a runtime image (why? run time image is smaller that sdk image)
+# genereate a runtime image (why? runtime image is smaller that sdk image)
 FROM mcr.microsoft.com/dotnet/runtime:5.0 
 WORKDIR /source
 
