@@ -4,9 +4,9 @@
 
 ### Solution
 I'm starting by setting up an unusual folder structure in may project. My solution will stay at the root of the project. So, let's create our solution.
-´´´
+```
 dotnet new sln -n MyBackgroundProcess
-´´´
+```
 ### Create your console app and add it to the solution
 To avoid mixing concepts, all my projects will be inside the *src* folder. Each project will live have their own folder.
 ```
