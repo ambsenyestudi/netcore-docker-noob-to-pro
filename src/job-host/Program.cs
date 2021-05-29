@@ -1,6 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MyBackgroundProcess.Application.Mapping;
 using MyBackgroundProcess.Application.Posting;
 using MyBackgroundProcess.Infrastructure.Blogging;
 using MyBackgroundProcess.Infrastructure.Posting;
@@ -24,7 +27,16 @@ namespace MyBackgroundProces.JobHost
                 {
                     services
                         .AddHostedService<Worker>()
-                        .AddTransient<IPostService, PostService>()
+
+                        .AddTransient<PostService>()
+                        .AddTransient<IPostService, LoggingPostServiceDecorator>(sp =>
+                            new LoggingPostServiceDecorator(
+                                sp.GetService<PostService>(),
+                                sp.GetService<ILogger<LoggingPostServiceDecorator>>()))
+                        .AddSingleton<IPostSerializationService, PostSerializationService>()
+                        .AddSingleton<IPostRepository, PostRepository>()
+                        .AddSingleton<IPostMappingService, PostMappingService>()
+                        .AddSingleton<IMapper>(ConfigureAutomapper)
                         .AddSingleton<JsonSerializerOptions>(CreateDefaultJsonSerializerOptions());
                     services.Configure<BlogClientSettings>(hostContext.Configuration.GetSection(nameof(BlogClientSettings)));
                     services.Configure<PostSettings>(hostContext.Configuration.GetSection(nameof(PostSettings)));
@@ -32,6 +44,14 @@ namespace MyBackgroundProces.JobHost
                     services.AddHttpClient<IPostGateway, PostGateway>()
                         .ConfigureHttpClient(ConfigureClient);
                 });
+
+        private static IMapper ConfigureAutomapper(IServiceProvider arg)
+        {
+            var config = new MapperConfiguration(cfg => {
+                cfg.AddProfile<PostProfile>();
+            });
+            return new Mapper(config);
+        }
 
         public static void ConfigureClient(IServiceProvider sp, HttpClient client)
         {

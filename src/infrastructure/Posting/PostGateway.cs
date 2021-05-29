@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using MyBackgroundProcess.Application.DTO;
 using MyBackgroundProcess.Application.Posting;
+using MyBackgroundProcess.Domain.Posting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,35 +14,31 @@ namespace MyBackgroundProcess.Infrastructure.Posting
 {
     public class PostGateway: IPostGateway
     {
+        private readonly IPostSerializationService postSerializationService;
         private readonly HttpClient httpClient;
-        private readonly JsonSerializerOptions jsonSerializerOptions;
         private readonly PostSettings settings;
         private readonly string postsEndpoint;
 
         public PostGateway(
+            IPostSerializationService postSerializationService,
             HttpClient httpClient,
-            JsonSerializerOptions jsonSerializerOptions,
             IOptions<PostSettings> options)
         {
+            this.postSerializationService = postSerializationService;
             this.httpClient = httpClient;
-            this.jsonSerializerOptions = jsonSerializerOptions;
             settings = options.Value;
             postsEndpoint = settings.Endpoint;
         }
 
-        public async Task<IEnumerable<PostDTO>> GetAllPosts()
+        public async Task<IEnumerable<Post>> GetAllPosts()
         {
             var response = await httpClient.GetAsync(postsEndpoint);
             response.EnsureSuccessStatusCode();
-            return await DeserializeContentAsync(response.Content);
+            return await postSerializationService.DeserializeAsync(response);
         }
 
-        private async Task<IEnumerable<PostDTO>> DeserializeContentAsync(HttpContent content)
-        {
-            var readableContent = await content.ReadAsStringAsync();
-            var contentStream = await content.ReadAsStreamAsync();
-            var resultList = await JsonSerializer.DeserializeAsync<IEnumerable<PostDTO>>(contentStream, jsonSerializerOptions);
-            return resultList;
-        }
+        
+
+        
     }
 }

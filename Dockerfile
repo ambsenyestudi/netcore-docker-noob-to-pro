@@ -6,6 +6,7 @@ WORKDIR /source
 COPY *.sln .
 COPY src/job-host/*.csproj ./src/job-host/
 COPY src/application/*.csproj ./src/application/
+COPY src/domain/*.csproj ./src/domain/
 COPY src/infrastructure/*.csproj ./src/infrastructure/
 RUN dotnet restore
 

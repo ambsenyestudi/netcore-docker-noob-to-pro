@@ -33,12 +33,13 @@ namespace MyBackgroundProces.JobHost
                 {
                     try
                     {
-                        var postedMessageCollection = await postService.GetAllPostsAsync();
-                        foreach (var postMessageItem in postedMessageCollection)
+                        var postIdCollection = await postService.GetAllPostIdsAsync();
+                        foreach (var id in postIdCollection)
                         {
-                            var postMessage = $"id: {postMessageItem.id} title:{postMessageItem.title} userId:{postMessageItem.userId}";
-                            logger.LogInformation(postMessage);
+                            await Task.Delay(50);
+                            await postService.GetByAsync(id);
                         }
+                        
                         exitCode = 0;
                     }
                     catch (Exception ex)

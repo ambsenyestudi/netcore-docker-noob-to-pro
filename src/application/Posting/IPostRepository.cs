@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 
 namespace MyBackgroundProcess.Application.Posting
 {
-    public interface IPostService
+    public interface IPostRepository
     {
-        Task<IEnumerable<PostId>> GetAllPostIdsAsync();
-        Task<Post> GetByAsync(PostId postId);
+        Task<IEnumerable<PostId>> GetAllPostId();
+        Task<Post> GetBy(PostId postId);
     }
 }
