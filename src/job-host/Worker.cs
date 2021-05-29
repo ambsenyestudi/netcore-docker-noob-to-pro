@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using MyBackgroundProcess.Application.Greeting;
+using MyBackgroundProcess.Application.Posting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,17 +9,17 @@ namespace MyBackgroundProces.JobHost
 {
     public class Worker : IHostedService
     {
-        private readonly IGreetingService greetingService;
+        private readonly IPostService postService;
         private readonly ILogger<Worker> logger;
         private readonly IHostApplicationLifetime appLifetime;
         private int? exitCode;
 
         public Worker(
-            IGreetingService greetingService,
+            IPostService postService,
             ILogger<Worker> logger,
             IHostApplicationLifetime appLifetime)
         {
-            this.greetingService = greetingService;
+            this.postService = postService;
             this.logger = logger;
             this.appLifetime = appLifetime;
         }
@@ -34,8 +33,12 @@ namespace MyBackgroundProces.JobHost
                 {
                     try
                     {
-                        var messege = await greetingService.ComposeGreeting();
-                        logger.LogInformation(messege);
+                        var postedMessageCollection = await postService.GetAllPostsAsync();
+                        foreach (var postMessageItem in postedMessageCollection)
+                        {
+                            var postMessage = $"id: {postMessageItem.id} title:{postMessageItem.title} userId:{postMessageItem.userId}";
+                            logger.LogInformation(postMessage);
+                        }
                         exitCode = 0;
                     }
                     catch (Exception ex)
