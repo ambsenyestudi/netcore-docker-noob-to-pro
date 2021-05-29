@@ -35,12 +35,10 @@ To build a successful docker file we need to take the following actions:
 
 ### Dockerfile: Setup container and restore dependencies
 
-To setup a container to gather all information need for publish your application you need the following:
+To setup a container to gather all information needed for publishing your application, you need the following:
 1. Use a docker image containing dotnet sdk (for building purposes)
 2. Setting up a destination folder for the build (in our case source)
 3. Copy solution files and project files to the recently created folder for nuget package restoring purposes.
-4. After restoring all nugget packages, copy everything we need to compile (remember .dockerignore? this is where it serves its purpose).
-
 ```
 # https://hub.docker.com/_/microsoft-dotnet
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
@@ -54,7 +52,7 @@ RUN dotnet restore
 ### Dockerfile: how to publish your app
 
 Now that we have solved every needed dependency, we need to take the following actions:
-1. Copy the rest of the source code (remember .dockeringore? it serves its purpose at this very step)
+1. After restoring all nugget packages, copy everything we need to compile (remember .dockerignore? this is where it serves its purpose).
 2. Publish our application
 > Remember to use **-o flag** to specify the *output folder* for tidiness.
 ```
@@ -85,10 +83,7 @@ COPY --from=build-env /source/publish ./
 # set up the entry point just as we did with dotnet .\MyBackroundProces.Host.dll
 ENTRYPOINT ["dotnet", "MyBackroundProces.Host.dll"]
 ```
-> When defining entry point we are doing something similar to what we did int the previous lesson when running our published app 
-```
-dotnet .\MyBackroundProces.Host.dll
-```
+> When defining entry point we are doing something similar to what we did int the previous when [making sure we can run our project](00-CreatingYourApp.md#making-sure-we-can-run-our-project)
 
 
 
