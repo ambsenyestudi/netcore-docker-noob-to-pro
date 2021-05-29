@@ -19,4 +19,4 @@ WORKDIR /source
 COPY --from=build-env /source/publish ./
 
 # set up the entry point just as we did with dotnet .\MyBackroundProces.Host.dll
-ENTRYPOINT ["dotnet", "MyBackroundProces.JobHost.dll"]
+ENTRYPOINT ["dotnet", "MyBackgroundProces.JobHost.dll"]
