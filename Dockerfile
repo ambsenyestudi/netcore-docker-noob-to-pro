@@ -4,7 +4,7 @@ WORKDIR /source
 
 # copy csproj and restore as distinct layers
 COPY *.sln .
-COPY src/host/*.csproj ./src/host/
+COPY src/job-host/*.csproj ./src/job-host/
 RUN dotnet restore
 
 # copy the rest of the file so we can run the publish command
@@ -19,4 +19,4 @@ WORKDIR /source
 COPY --from=build-env /source/publish ./
 
 # set up the entry point just as we did with dotnet .\MyBackroundProces.Host.dll
-ENTRYPOINT ["dotnet", "MyBackroundProces.Host.dll"]
+ENTRYPOINT ["dotnet", "MyBackroundProces.JobHost.dll"]
