@@ -33,6 +33,8 @@ To build a successful docker file we need to take the following actions:
 2. [Publishing our app](#dockerfile-how-to-publish-your-app)
 3. [Setup entry point for our container](#dockerfile-setup-an-entry-point-for-our-container)
 
+Once we have a good dockerfile you can [Build and run your docker container](#build-and-run-a-docker-container)
+
 ### Dockerfile: Setup container and restore dependencies
 
 To setup a container to gather all information needed for publishing your application, you need the following:
@@ -85,5 +87,13 @@ ENTRYPOINT ["dotnet", "MyBackroundProces.Host.dll"]
 ```
 > When defining entry point we are doing something similar to what we did int the previous when [making sure we can run our project](00-CreatingYourApp.md#making-sure-we-can-run-our-project)
 
+### Build and run a docker container
 
+Docker build [as seen before](#docker-file) is a fairly straightforward command. The tricky part comes when you want to run an image with no tag.
+>Save yourself some troubles tagging all your images (using the -t flag) so you can easily run them afterwards.
 
+Following the former advice, it would go something like the following:
+```
+docker build -t my-background-process .
+docker run my-background-process
+ ```

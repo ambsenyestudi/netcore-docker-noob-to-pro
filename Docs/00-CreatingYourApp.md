@@ -41,10 +41,11 @@ dotnet run -p .\src\host\MyBackroundProces.Host.csproj
  1. Publish our app
  2. Run our app
 > Remember to use **-o flag** to specify the *output folder* for tidiness
-´´´
+```
 dotnet publish -o publish
 dotnet .\MyBackroundProces.Host.dll
-´´´
+```
+
 
 
 
