@@ -7,3 +7,4 @@ Steps to follow when learning about docker with net core
 3. [Create a generic host](Docs/02-GenericHost.md)
 4. [Adding options to generic host](Docs/03-Options.md)
 5. [Adding http client to generic host](Docs/04-HttpClient.md)
+6. [Adding a domain layer](Docs/05-Domain.md)
