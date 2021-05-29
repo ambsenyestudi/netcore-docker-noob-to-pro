@@ -65,7 +65,7 @@ RUN dotnet publish -c Release -o publish
 
 ### Dockerfile: setup an entry point for our container
 
-To keep our images lean we need a smaller image than the sdk. They all can be found at (microsoft docker image)[ https://hub.docker.com/_/microsoft-dotnet].
+To keep our images lean we need a smaller image than the sdk. They all can be found at [microsoft docker image](https://hub.docker.com/_/microsoft-dotnet).
 > Usually for aspnet core we use aspnet image but since we are using a console app we will use runtime
 
 Therefore, we will execute the following actions:
