@@ -14,6 +14,7 @@ namespace MyBackgroundProces.JobHost
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<Worker>();
+                    services.Configure<GreetingSettings>(hostContext.Configuration.GetSection(nameof(GreetingSettings)));
                 });
     }
 }
