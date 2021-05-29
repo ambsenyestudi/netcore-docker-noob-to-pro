@@ -29,8 +29,8 @@ The .dockerfile purpose boils down to we saw at the previous lesson:
 ## The docker file recipe 
 
 To build a successful docker file we need to take the following actions:
-1. [Setup container and restore dependencies] ("Dockerfile: Setup container and restore dependencies")
-2. [Publishing our app] ("Dockerfile: how to publish your app")
+1. [Setup container and restore dependencies]("#dockerfile-setup-container-and-restore-dependencies")
+2. [Publishing our app](#dockerfile-how-to-publish-your-app)
 
 ### Dockerfile: Setup container and restore dependencies
 
