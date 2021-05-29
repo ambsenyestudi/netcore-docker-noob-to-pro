@@ -5,6 +5,8 @@ WORKDIR /source
 # copy csproj and restore as distinct layers
 COPY *.sln .
 COPY src/job-host/*.csproj ./src/job-host/
+COPY src/application/*.csproj ./src/application/
+COPY src/infrastructure/*.csproj ./src/infrastructure/
 RUN dotnet restore
 
 # copy the rest of the file so we can run the publish command

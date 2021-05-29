@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyBackgroundProces.JobHost
+namespace MyBackgroundProcess.Infrastructure.Greeting
 {
     public class GreetingSettings
     {

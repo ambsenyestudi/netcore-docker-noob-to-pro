@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MyBackgroundProcess.Application.Greeting;
+using MyBackgroundProcess.Infrastructure.Greeting;
 
 namespace MyBackgroundProces.JobHost
 {
@@ -11,9 +13,12 @@ namespace MyBackgroundProces.JobHost
         }
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddHostedService<Worker>();
+                    services
+                        .AddHostedService<Worker>()
+                        .AddTransient<IGreetingService, GreetingService>();
                     services.Configure<GreetingSettings>(hostContext.Configuration.GetSection(nameof(GreetingSettings)));
                 });
     }

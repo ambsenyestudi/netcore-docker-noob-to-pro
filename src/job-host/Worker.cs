@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MyBackgroundProcess.Application.Greeting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,17 +10,17 @@ namespace MyBackgroundProces.JobHost
 {
     public class Worker : IHostedService
     {
-        private readonly GreetingSettings setting;
+        private readonly IGreetingService greetingService;
         private readonly ILogger<Worker> logger;
         private readonly IHostApplicationLifetime appLifetime;
         private int? exitCode;
 
         public Worker(
-            IOptions<GreetingSettings> options,
+            IGreetingService greetingService,
             ILogger<Worker> logger,
             IHostApplicationLifetime appLifetime)
         {
-            setting = options.Value;
+            this.greetingService = greetingService;
             this.logger = logger;
             this.appLifetime = appLifetime;
         }
@@ -33,7 +34,7 @@ namespace MyBackgroundProces.JobHost
                 {
                     try
                     {
-                        var messege = await Task.Factory.StartNew(() => setting.Greeting);
+                        var messege = await greetingService.ComposeGreeting();
                         logger.LogInformation(messege);
                         exitCode = 0;
                     }
